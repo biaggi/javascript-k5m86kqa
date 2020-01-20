@@ -10,17 +10,24 @@ export default class StandardJSWebComponent extends HTMLElement {
 
   // Specify observed attributes names to be notified in attributeChangedCallback
   static get observedAttributes() {
-    return [];
+    return ["name"];
   }
 
   // Called when an observed attribute has been added, removed, updated, or replaced.
   // Also called for initial values when an element is created by the parser, or upgraded.
   // Note: only attributes listed in the observedAttributes property will receive this callback.
-  attributeChangedCallback(attr, oldValue, newValue) {}
+  attributeChangedCallback(attr, oldValue, newValue) {
+    console.log("attr changed callback", attr, newValue);
+    this.render();
+  }
 
   // Called every time the element is inserted into the DOM.
   // Useful for running setup code, such as fetching resources or rendering.Generally, you should try to delay work until this time.
   connectedCallback() {
+    this.render();
+  }
+
+  render() {
     this.shadowRoot.innerHTML = `
     <!-- scoped styles -->
     <style>
@@ -32,7 +39,6 @@ export default class StandardJSWebComponent extends HTMLElement {
     <button class="btn">Hello ${this.getAttribute("name") ||
       "World"}!</button>`;
   }
-
   // Called every time the element is removed from the DOM.
   // Useful for running clean up code.
   disconnectedCallback() {}
